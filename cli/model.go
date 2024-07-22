@@ -13,12 +13,13 @@ type model struct {
 	initialised           bool
 	fatalErr              error
 	domains               []string
+	status                hosts.FocusStatus
 }
 
 func NewModel() model {
 	return model{
 		hostsManager: &hosts.Manager{},
-		commands:     []command{commandFocusOn, commandFocusOff, commandConfigureBlacklist},
+		commands:     []command{},
 	}
 }
 
@@ -32,6 +33,7 @@ type initResult struct {
 
 func (m model) loadInitialConfig() tea.Msg {
 	initErr := m.hostsManager.Init()
+
 	return initResult{
 		err: initErr,
 	}
@@ -42,9 +44,21 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case initResult:
 		m.initialised = true
+
 		if msg.err != nil {
 			m.fatalErr = msg.err
 			return m, tea.Quit
+		}
+
+		m.domains = m.hostsManager.Domains
+		m.status = m.hostsManager.Status
+		if m.status == hosts.FocusStatusOn {
+			m.commands = []command{commandFocusOff, commandConfigureBlacklist}
+		} else {
+			m.commands = []command{commandFocusOn, commandConfigureBlacklist}
+		}
+		if len(m.domains) == 0 {
+			// TODO: open edit window
 		}
 
 	case tea.KeyMsg:

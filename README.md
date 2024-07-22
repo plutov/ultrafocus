@@ -15,3 +15,15 @@ ultrafocus needs sudo to modify `/etc/hosts` file. It won't affect your existing
 ```bash
 sudo ultrafocus
 ```
+
+## Supported platforms
+
+- macOS
+- Linux
+- Windows
+
+## Run tests
+
+```bash
+go test -v -race ./...
+```

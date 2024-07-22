@@ -9,17 +9,14 @@ var appNameStyle = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("#FF5F87")).
 	Bold(true)
 
-var statusBarStyle = lipgloss.NewStyle().
-	Foreground(lipgloss.AdaptiveColor{Light: "#343433", Dark: "#C1C6B2"}).
-	Background(lipgloss.AdaptiveColor{Light: "#D9DCCF", Dark: "#353533"})
-
-var statusStyle = lipgloss.NewStyle().
-	Inherit(statusBarStyle).
+var errorAlertStyle = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("#FFFDF5")).
 	Background(lipgloss.Color("#FF5F87")).
 	Padding(0, 1)
 
-var statusText = lipgloss.NewStyle().Inherit(statusBarStyle).Padding(0, 1)
+var errorInfoStyle = lipgloss.NewStyle().
+	Foreground(lipgloss.Color("250")).
+	Padding(0, 1)
 
 var listEnumeratorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("99")).MarginRight(1)
 var listItemStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("212")).MarginRight(1)
@@ -30,17 +27,13 @@ func (m model) View() string {
 	s := appNameStyle.Render("ultrafocus") + faint.Render(" - Reclaim your time.") + "\n\n"
 
 	if !m.initialised {
+		s += faint.Render("...") + "\n"
 		return s
 	}
 
 	if m.fatalErr != nil {
-		return s + faint.Render("ERROR: "+m.fatalErr.Error()+"\n")
-		// bar := lipgloss.JoinHorizontal(lipgloss.Top,
-		// 	statusStyle.Render("ERROR"),
-		// 	statusText.Render(m.fatalErr.Error()),
-		// )
-
-		// return s + bar + "\n"
+		s += errorAlertStyle.Render("ERROR") + errorInfoStyle.Render(m.fatalErr.Error()) + "\n"
+		return s
 	}
 
 	l := list.New().Enumerator(func(items list.Items, i int) string {
