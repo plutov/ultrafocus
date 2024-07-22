@@ -31,13 +31,10 @@ type initResult struct {
 }
 
 func (m model) loadInitialConfig() tea.Msg {
-	if err := m.hostsManager.Init(); err != nil {
-		return initResult{
-			err: err,
-		}
+	initErr := m.hostsManager.Init()
+	return initResult{
+		err: initErr,
 	}
-
-	return initResult{}
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {

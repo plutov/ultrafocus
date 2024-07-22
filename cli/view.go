@@ -30,32 +30,31 @@ func (m model) View() string {
 	s := appNameStyle.Render("ultrafocus") + faint.Render(" - Reclaim your time.") + "\n\n"
 
 	if !m.initialised {
-		s += "Loading current configuration...\n\n"
+		return s
 	}
 
 	if m.fatalErr != nil {
-		bar := lipgloss.JoinHorizontal(lipgloss.Top,
-			statusStyle.Render("ERROR"),
-			statusText.Render(m.fatalErr.Error()),
-		)
+		return s + faint.Render("ERROR: "+m.fatalErr.Error()+"\n")
+		// bar := lipgloss.JoinHorizontal(lipgloss.Top,
+		// 	statusStyle.Render("ERROR"),
+		// 	statusText.Render(m.fatalErr.Error()),
+		// )
 
-		s += bar + "\n\n"
+		// return s + bar + "\n"
 	}
 
-	if m.initialised && m.fatalErr == nil {
-		l := list.New().Enumerator(func(items list.Items, i int) string {
-			if i == m.commandsListSelection {
-				return "→"
-			}
-			return " "
-		}).
-			EnumeratorStyle(listEnumeratorStyle).
-			ItemStyle(listItemStyle)
-		for _, c := range m.commands {
-			l.Item(c.Name + faint.Render(" - "+c.Desc))
+	l := list.New().Enumerator(func(items list.Items, i int) string {
+		if i == m.commandsListSelection {
+			return "→"
 		}
-		s += l.String() + "\n\n"
+		return " "
+	}).
+		EnumeratorStyle(listEnumeratorStyle).
+		ItemStyle(listItemStyle)
+	for _, c := range m.commands {
+		l.Item(c.Name + faint.Render(" - "+c.Desc))
 	}
+	s += l.String() + "\n\n"
 
 	s += "press q to quit.\n"
 
