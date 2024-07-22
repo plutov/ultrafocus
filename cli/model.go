@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/plutov/ultrafocus/hosts"
 )
@@ -13,7 +14,9 @@ type model struct {
 	initialised           bool
 	fatalErr              error
 	domains               []string
+	isEditingDomains      bool
 	status                hosts.FocusStatus
+	textarea              textarea.Model
 }
 
 func NewModel() model {
@@ -58,7 +61,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.commands = []command{commandFocusOn, commandConfigureBlacklist}
 		}
 		if len(m.domains) == 0 {
-			// TODO: open edit window
+			ti := textarea.New()
+			ti.Placeholder = "Once upon a time..."
+			ti.Focus()
+			m.textarea = ti
+			m.isEditingDomains = true
+			return m, textarea.Blink
 		}
 
 	case tea.KeyMsg:
