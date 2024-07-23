@@ -3,8 +3,8 @@
 A dead simple CLI tool to block distracting websites and boost productivity. Customize your blacklist, focus on tasks, and reclaim your time.
 
 <p align="center" width="100%">
-    <img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/domains.png" hspace="10" height="50px">
-    <img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/status.png" hspace="10" height="50px">
+    <img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/domains.png" hspace="10" height="200px">
+    <img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/status.png" hspace="10" height="200px">
 </p>
 
 ## Installation
@@ -28,6 +28,16 @@ sudo ultrafocus
 - macOS
 - Linux
 - Windows
+
+## Default blacklist
+
+- facebook.com
+- instagram.com
+- tiktok.com
+- twitter.com
+- youtube.com
+- netflix.com
+- reddit.com
 
 ## Run tests
 
