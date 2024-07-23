@@ -1,5 +1,5 @@
-//go:build darwin || dragonfly || freebsd || linux || netbsd || openbsd || solaris
-// +build darwin dragonfly freebsd linux netbsd openbsd solaris
+//go:build darwin || linux
+// +build darwin linux
 
 package hosts
 

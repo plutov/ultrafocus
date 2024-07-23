@@ -1,33 +1,54 @@
 package cli
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	"strings"
+
+	"github.com/plutov/ultrafocus/hosts"
+)
 
 type command struct {
 	Name string
 	Desc string
-	Run  func() tea.Cmd
+	Run  func(m model) model
 }
 
 var commandFocusOn = command{
 	Name: "focus on",
 	Desc: "Start focus window.",
-	Run: func() tea.Cmd {
-		return nil
+	Run: func(m model) model {
+		if err := hosts.WriteDomainsToHostsFile(m.domains, hosts.FocusStatusOn); err != nil {
+			m.fatalErr = err
+			return m
+		}
+
+		m.status = hosts.FocusStatusOn
+		return m
 	},
 }
 
 var commandFocusOff = command{
 	Name: "focus off",
 	Desc: "Stop focus window.",
-	Run: func() tea.Cmd {
-		return nil
+	Run: func(m model) model {
+		if err := hosts.WriteDomainsToHostsFile(m.domains, hosts.FocusStatusOff); err != nil {
+			m.fatalErr = err
+			return m
+		}
+
+		m.status = hosts.FocusStatusOff
+		return m
 	},
 }
 
 var commandConfigureBlacklist = command{
 	Name: "blacklist",
 	Desc: "Configure blacklist.",
-	Run: func() tea.Cmd {
-		return nil
+	Run: func(m model) model {
+		m.commandsListSelection = 0
+		m.state = blacklistView
+		m.textarea.SetValue(strings.Join(m.domains, "\n"))
+		m.textarea.Focus()
+		m.textarea.CursorEnd()
+		return m
 	},
 }

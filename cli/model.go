@@ -1,95 +1,117 @@
 package cli
 
 import (
+	"strings"
+
 	"github.com/charmbracelet/bubbles/textarea"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/plutov/ultrafocus/hosts"
 )
 
+type sessionState uint
+
+const (
+	menuView sessionState = iota
+	blacklistView
+)
+
 type model struct {
-	hostsManager          *hosts.Manager
 	commands              []command
 	commandsListSelection int
-	currentCommand        *command
-	initialised           bool
 	fatalErr              error
 	domains               []string
-	isEditingDomains      bool
+	state                 sessionState
 	status                hosts.FocusStatus
 	textarea              textarea.Model
 }
 
 func NewModel() model {
+	domains, status, err := hosts.ExtractDomainsFromHostsFile()
+
+	state := menuView
+	ti := textarea.New()
+	if len(domains) == 0 {
+		state = blacklistView
+		ti.SetValue(strings.Join(hosts.DefaultDomains, "\n"))
+		ti.Focus()
+		ti.CursorEnd()
+	} else {
+		ti.Blur()
+	}
+
 	return model{
-		hostsManager: &hosts.Manager{},
-		commands:     []command{},
+		textarea: ti,
+		domains:  domains,
+		state:    state,
+		status:   status,
+		fatalErr: err,
 	}
 }
 
 func (m model) Init() tea.Cmd {
-	return m.loadInitialConfig
-}
-
-type initResult struct {
-	err error
-}
-
-func (m model) loadInitialConfig() tea.Msg {
-	initErr := m.hostsManager.Init()
-
-	return initResult{
-		err: initErr,
+	if m.fatalErr != nil {
+		return tea.Quit
 	}
+
+	return nil
+}
+
+func (m *model) getCommmandsList() []command {
+	if m.status == hosts.FocusStatusOn {
+		return []command{commandFocusOff, commandConfigureBlacklist}
+	}
+
+	return []command{commandFocusOn, commandConfigureBlacklist}
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmds []tea.Cmd
+	var cmd tea.Cmd
+
+	m.textarea, cmd = m.textarea.Update(msg)
+	cmds = append(cmds, cmd)
+
 	switch msg := msg.(type) {
 
-	case initResult:
-		m.initialised = true
-
-		if msg.err != nil {
-			m.fatalErr = msg.err
-			return m, tea.Quit
-		}
-
-		m.domains = m.hostsManager.Domains
-		m.status = m.hostsManager.Status
-		if m.status == hosts.FocusStatusOn {
-			m.commands = []command{commandFocusOff, commandConfigureBlacklist}
-		} else {
-			m.commands = []command{commandFocusOn, commandConfigureBlacklist}
-		}
-		if len(m.domains) == 0 {
-			ti := textarea.New()
-			ti.Placeholder = "Once upon a time..."
-			ti.Focus()
-			m.textarea = ti
-			m.isEditingDomains = true
-			return m, textarea.Blink
-		}
-
 	case tea.KeyMsg:
+		commands := m.getCommmandsList()
 		switch msg.String() {
 
 		case "up", "k":
-			if m.commandsListSelection > 0 {
+			if m.state == menuView && m.commandsListSelection > 0 {
 				m.commandsListSelection--
 			}
 
 		case "down", "j":
-			if m.commandsListSelection < len(m.commands)-1 {
+			if m.state == menuView && m.commandsListSelection < len(commands)-1 {
 				m.commandsListSelection++
 			}
 
 		case "enter", " ":
-			m.currentCommand = &m.commands[m.commandsListSelection]
-			return m, m.currentCommand.Run()
-
+			if m.state == menuView {
+				m = commands[m.commandsListSelection].Run(m)
+				if m.fatalErr != nil {
+					return m, tea.Quit
+				}
+			}
 		case "ctrl+c", "q":
 			return m, tea.Quit
+		case "esc":
+			if m.state == blacklistView {
+				domains := strings.Split(m.textarea.Value(), "\n")
+				domains = hosts.CleanDomainsList(domains)
+
+				if err := hosts.WriteDomainsToHostsFile(domains, m.status); err != nil {
+					m.fatalErr = err
+					return m, tea.Quit
+				}
+
+				m.domains = domains
+				m.state = menuView
+				m.textarea.Blur()
+			}
 		}
 	}
 
-	return m, nil
+	return m, tea.Batch(cmds...)
 }
