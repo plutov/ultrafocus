@@ -5,6 +5,10 @@ on:
     types:
       - created
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   releases-matrix:
     name: Release Go Binaries
