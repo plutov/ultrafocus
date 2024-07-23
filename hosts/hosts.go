@@ -20,8 +20,6 @@ const (
 	CommentStatusOff             = "#ultrafocus:off"
 )
 
-var DefaultDomains = []string{"facebook.com", "instagram.com", "tiktok.com", "twitter.com", "youtube.com", "netflix.com", "reddit.com"}
-
 func ExtractDomainsFromHostsFile() ([]string, FocusStatus, error) {
 	domains := []string{}
 	status := FocusStatusOff
