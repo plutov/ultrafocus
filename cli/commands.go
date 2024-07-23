@@ -44,7 +44,6 @@ var commandConfigureBlacklist = command{
 	Name: "blacklist",
 	Desc: "Configure blacklist.",
 	Run: func(m model) model {
-		m.commandsListSelection = 0
 		m.state = blacklistView
 		m.textarea.SetValue(strings.Join(m.domains, "\n"))
 		m.textarea.Focus()
