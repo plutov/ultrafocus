@@ -16,7 +16,6 @@ const (
 )
 
 type model struct {
-	commands              []command
 	commandsListSelection int
 	fatalErr              error
 	domains               []string

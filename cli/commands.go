@@ -46,8 +46,8 @@ var commandConfigureBlacklist = command{
 	Run: func(m model) model {
 		m.state = blacklistView
 		m.textarea.SetValue(strings.Join(m.domains, "\n"))
-		m.textarea.Focus()
 		m.textarea.CursorEnd()
+		m.textarea.Focus()
 		return m
 	},
 }
