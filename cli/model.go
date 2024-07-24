@@ -51,7 +51,7 @@ func (m model) Init() tea.Cmd {
 	return textarea.Blink
 }
 
-func (m *model) getCommmandsList() []command {
+func (m *model) getCommandsList() []command {
 	if m.status == hosts.FocusStatusOn {
 		return []command{commandFocusOff, commandConfigureBlacklist}
 	}
@@ -69,7 +69,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case tea.KeyMsg:
-		commands := m.getCommmandsList()
+		commands := m.getCommandsList()
 		switch msg.String() {
 
 		case "up", "k":

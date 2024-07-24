@@ -42,7 +42,7 @@ func (m model) View() string {
 	}
 
 	if m.state == menuView {
-		commands := m.getCommmandsList()
+		commands := m.getCommandsList()
 
 		l := list.New().Enumerator(func(items list.Items, i int) string {
 			if i == m.commandsListSelection {
