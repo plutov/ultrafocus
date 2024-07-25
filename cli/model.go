@@ -27,17 +27,14 @@ type model struct {
 func NewModel() model {
 	domains, status, err := hosts.ExtractDomainsFromHostsFile()
 
-	state := menuView
-	ti := textarea.New()
-	ti.Blur()
 	if len(domains) == 0 {
 		domains = hosts.DefaultDomains
 	}
 
 	return model{
-		textarea: ti,
+		textarea: GetTextareModel(),
 		domains:  domains,
-		state:    state,
+		state:    menuView,
 		status:   status,
 		fatalErr: err,
 	}
@@ -48,7 +45,7 @@ func (m model) Init() tea.Cmd {
 		return tea.Quit
 	}
 
-	return textarea.Blink
+	return nil
 }
 
 func (m *model) getCommandsList() []command {
