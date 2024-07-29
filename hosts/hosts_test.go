@@ -9,8 +9,8 @@ func TestExtractDomainsFromData(t *testing.T) {
 	tests := []struct {
 		name        string
 		data        string
-		wantDomains []string
 		wantStatus  FocusStatus
+		wantDomains []string
 		wantErr     bool
 	}{
 		{
@@ -77,9 +77,9 @@ func TestUpdateHostsData(t *testing.T) {
 	tests := []struct {
 		name         string
 		originalData string
-		domains      []string
 		status       FocusStatus
 		wantNewData  string
+		domains      []string
 		wantErr      bool
 	}{
 		{
