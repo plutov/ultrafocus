@@ -16,12 +16,12 @@ const (
 )
 
 type model struct {
-	commandsListSelection int
-	fatalErr              error
-	domains               []string
-	state                 sessionState
-	status                hosts.FocusStatus
 	textarea              textarea.Model
+	fatalErr              error
+	status                hosts.FocusStatus
+	domains               []string
+	commandsListSelection int
+	state                 sessionState
 }
 
 func NewModel() model {

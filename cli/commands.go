@@ -7,9 +7,9 @@ import (
 )
 
 type command struct {
+	Run  func(m model) model
 	Name string
 	Desc string
-	Run  func(m model) model
 }
 
 var commandFocusOn = command{
