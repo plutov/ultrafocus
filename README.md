@@ -1,5 +1,9 @@
 # ultrafocus
 
+<h1 align="center">
+		Focus is key. Unlock your potential.
+</h1>
+
 A dead simple CLI tool to block distracting websites and boost productivity. Customize your blacklist, focus on tasks, and reclaim your time.
 
 <p align="center" width="100%">
@@ -23,6 +27,8 @@ ultrafocus needs `sudo` to modify `/etc/hosts` file. It won't affect your existi
 sudo ultrafocus
 ```
 
+ultrafocus also runs a server on 127.0.0.1:80 where all the requests are redirected to. This page shows a random motivational message.
+
 ## Supported platforms
 
 - macOS
@@ -32,39 +38,42 @@ sudo ultrafocus
 ## Default blacklist
 
 ### Social Media
-* facebook.com
-* instagram.com
-* twitter.com
-* tiktok.com
-* snapchat.com
-* pinterest.com
-* linkedin.com
-* reddit.com
-* imgur.com
-* youtube.com
-* whatsapp.com
-* telegram.org
-* discord.com
+
+- facebook.com
+- instagram.com
+- twitter.com
+- tiktok.com
+- snapchat.com
+- pinterest.com
+- linkedin.com
+- reddit.com
+- imgur.com
+- youtube.com
+- whatsapp.com
+- telegram.org
+- discord.com
 
 ### News
-* bbc.com
-* cnn.com
-* aljazeera.com
-* theguardian.com
-* nytimes.com
-* google.com/news
-* apple.news
+
+- bbc.com
+- cnn.com
+- aljazeera.com
+- theguardian.com
+- nytimes.com
+- google.com/news
+- apple.news
 
 ### Games
-* steampowered.com
-* origin.com
-* epicgames.com
-* battle.net
-* playstation.com
-* xbox.com
-* miniclip.com
-* armorgames.com
-* kongregate.com
+
+- steampowered.com
+- origin.com
+- epicgames.com
+- battle.net
+- playstation.com
+- xbox.com
+- miniclip.com
+- armorgames.com
+- kongregate.com
 
 ## Run tests
 

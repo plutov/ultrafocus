@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/plutov/ultrafocus/hosts"
+	"github.com/plutov/ultrafocus/server"
 )
 
 type command struct {
@@ -21,6 +22,7 @@ var commandFocusOn = command{
 			return m
 		}
 
+		go server.StartAsSubprocess()
 		m.status = hosts.FocusStatusOn
 		return m
 	},
@@ -35,6 +37,7 @@ var commandFocusOff = command{
 			return m
 		}
 
+		go server.StopSubprocess()
 		m.status = hosts.FocusStatusOff
 		return m
 	},
