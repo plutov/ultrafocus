@@ -1,12 +1,14 @@
 package server
 
 import (
+	"crypto/tls"
 	"fmt"
 	"math/rand"
 	"net/http"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 
 	"github.com/shirou/gopsutil/v3/process"
 )
@@ -32,7 +34,18 @@ func focusMessage(w http.ResponseWriter, r *http.Request) {
 func Start() {
 	http.HandleFunc("/", focusMessage)
 
-	go http.ListenAndServe(":443", nil)
+	cert, err := tls.X509KeyPair(certPem, keyPem)
+	if err != nil {
+		return
+	}
+	cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
+	srv := &http.Server{
+		TLSConfig:    cfg,
+		ReadTimeout:  time.Minute,
+		WriteTimeout: time.Minute,
+	}
+
+	go srv.ListenAndServeTLS("", "")
 	http.ListenAndServe(":80", nil)
 }
 
