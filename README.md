@@ -1,14 +1,16 @@
-# ultrafocus
+<h1 align="center">
+ultrafocus
+</h1>
 
 <h1 align="center">
-		Focus is key. Unlock your potential.
+Focus is key. Unlock your potential.
 </h1>
 
 A dead simple CLI tool to block distracting websites and boost productivity. Customize your blacklist, focus on tasks, and reclaim your time.
 
 <p align="center" width="100%">
-    <img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/domains.png" hspace="10" height="200px">
-    <img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/status.png" hspace="10" height="200px">
+<img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/domains.png" hspace="10" height="200px">
+<img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/status.png" hspace="10" height="200px">
 </p>
 
 ## Installation
