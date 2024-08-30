@@ -1,8 +1,11 @@
 package cli
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/lipgloss/list"
+	"github.com/plutov/ultrafocus/hosts"
 )
 
 var appNameStyle = lipgloss.NewStyle().
@@ -34,10 +37,19 @@ func (m model) View() string {
 	}
 
 	s := appNameStyle.Render("ultrafocus") + faint.Render(" - Reclaim your time.") + "\n\n"
-	s += statusStyle.Render("STATUS") + errorInfoStyle.Render(string(m.status)) + "\n\n"
+	statusMsg := string(m.status)
+	if m.status == hosts.FocusStatusOn && m.minutesLeft > 0 {
+		statusMsg += fmt.Sprintf(" (%d mins left)", m.minutesLeft)
+	}
+	s += statusStyle.Render("STATUS") + errorInfoStyle.Render(statusMsg) + "\n\n"
 
 	if m.state == blacklistView {
 		s += "Edit/add domains:\n\n" + m.textarea.View() + "\n\n"
+		s += "press Esc to save.\n"
+	}
+
+	if m.state == timerView {
+		s += "Enter amount of minutes:\n\n" + m.textinput.View() + "\n\n"
 		s += "press Esc to save.\n"
 	}
 

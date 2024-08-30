@@ -24,6 +24,7 @@ var commandFocusOn = command{
 
 		go server.StartAsSubprocess()
 		m.status = hosts.FocusStatusOn
+		m.minutesLeft = 0
 		return m
 	},
 }
@@ -39,6 +40,7 @@ var commandFocusOff = command{
 
 		go server.StopSubprocess()
 		m.status = hosts.FocusStatusOff
+		m.minutesLeft = 0
 		return m
 	},
 }
@@ -51,6 +53,17 @@ var commandConfigureBlacklist = command{
 		m.textarea.SetValue(strings.Join(m.domains, "\n"))
 		m.textarea.Focus()
 		m.textarea.CursorEnd()
+		return m
+	},
+}
+
+var commandFocusOnWithTimer = command{
+	Name: "focus on (timer)",
+	Desc: "Start timed focus window.",
+	Run: func(m model) model {
+		m.state = timerView
+		m.textinput.SetValue("30")
+		m.textinput.Focus()
 		return m
 	},
 }
