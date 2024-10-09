@@ -18,7 +18,7 @@ A dead simple CLI tool to block distracting websites and boost productivity. Cus
 Download the latest binary from the [releases page](https://github.com/plutov/ultrafocus/releases/latest) or use `go install`:
 
 ```bash
-go install github.com/plutov/ultrafocus
+go install github.com/plutov/ultrafocus@latest
 ```
 
 ## Usage
