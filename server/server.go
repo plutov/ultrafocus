@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/shirou/gopsutil/v3/process"
+	"github.com/shirou/gopsutil/v4/process"
 )
 
 var focusMessages = []string{
@@ -46,7 +46,7 @@ func Start() {
 	}
 
 	go srv.ListenAndServeTLS("", "")
-	http.ListenAndServe(":80", nil)
+	http.ListenAndServe("127.0.0.1:80", nil)
 }
 
 func StartAsSubprocess() {

@@ -23,13 +23,15 @@ go install github.com/plutov/ultrafocus@latest
 
 ## Usage
 
-ultrafocus needs `sudo` to modify `/etc/hosts` file. It won't affect your existing configuration, the changes made by ultrafocus are separated by `#ultrafocus:start/end` comments.
+ultrafocus needs `sudo` to modify `/etc/hosts` file. It won't affect your existing configuration, the changes made by ultrafocus are separated by `#ultrafocus:start` and `#ultrafocus:end` comments.
 
 ```bash
 sudo ultrafocus
 ```
 
-ultrafocus also runs a server on 127.0.0.1:80 where all the requests are redirected to. This page shows a random motivational message.
+ultrafocus also runs a server on `127.0.0.1:80` where all the requests are redirected to. This page shows a random motivational message.
+
+<img src="https://github.com/plutov/ultrafocus/blob/main/screenshots/result.png" height="125px">
 
 ## Supported platforms
 
@@ -39,43 +41,7 @@ ultrafocus also runs a server on 127.0.0.1:80 where all the requests are redirec
 
 ## Default blacklist
 
-### Social Media
-
-- facebook.com
-- instagram.com
-- twitter.com
-- tiktok.com
-- snapchat.com
-- pinterest.com
-- linkedin.com
-- reddit.com
-- imgur.com
-- youtube.com
-- whatsapp.com
-- telegram.org
-- discord.com
-
-### News
-
-- bbc.com
-- cnn.com
-- aljazeera.com
-- theguardian.com
-- nytimes.com
-- google.com/news
-- apple.news
-
-### Games
-
-- steampowered.com
-- origin.com
-- epicgames.com
-- battle.net
-- playstation.com
-- xbox.com
-- miniclip.com
-- armorgames.com
-- kongregate.com
+You can find the default blacklist in [hosts/domains.go](https://github.com/plutov/ultrafocus/blob/main/hosts/domains.go).
 
 ## Run tests
 
