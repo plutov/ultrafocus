@@ -28,7 +28,39 @@ var focusMessages = []string{
 
 func focusMessage(w http.ResponseWriter, r *http.Request) {
 	msg := focusMessages[rand.Intn(len(focusMessages))]
-	fmt.Fprintf(w, msg)
+	w.Header().Set("Content-Type", "text/html")
+	fmt.Fprintf(w, `<!DOCTYPE html>
+<html>
+<head>
+    <title>Ultra Focus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .message {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            font-size: 1.2rem;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <h1>Ultra Focus</h1>
+        <p>%s</p>
+    </div>
+</body>
+</html>`, msg)
 }
 
 func Start() {
@@ -38,7 +70,10 @@ func Start() {
 	if err != nil {
 		return
 	}
-	cfg := &tls.Config{Certificates: []tls.Certificate{cert}}
+	cfg := &tls.Config{
+		Certificates:       []tls.Certificate{cert},
+		InsecureSkipVerify: true,
+	}
 	srv := &http.Server{
 		TLSConfig:    cfg,
 		ReadTimeout:  time.Minute,
